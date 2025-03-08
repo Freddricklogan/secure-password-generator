@@ -1,7 +1,5 @@
 # Secure Password Generator
 
-![Secure Password Generator](assets/images/password-generator-preview.png)
-
 ## 🔐 Overview
 
 A modern, enterprise-grade password generator with advanced cybersecurity features. This application creates cryptographically secure passwords with detailed strength analysis and entropy calculation.
@@ -42,17 +40,6 @@ The application uses multiple factors to determine password strength:
 2. **Character Diversity**: Analysis of character type distribution
 3. **Pattern Detection**: Identification of common sequences or repetitions
 4. **Length Assessment**: Evaluation based on password length
-
-## 📱 Screenshots
-
-### Main Interface
-![Main Interface](assets/images/main-interface.png)
-
-### Advanced Options
-![Advanced Options](assets/images/advanced-options.png)
-
-### Mobile View
-![Mobile View](assets/images/mobile-view.png)
 
 ## 🚦 Getting Started
 
