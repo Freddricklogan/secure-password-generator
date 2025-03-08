@@ -1,0 +1,526 @@
+/*
+* Secure Password Generator
+* Enhanced CSS with modern design and responsive features
+*/
+
+:root {
+    /* Color scheme */
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --success-color: #2ecc71;
+    --warning-color: #f39c12;
+    --light-color: #ecf0f1;
+    --dark-color: #2c3e50;
+    --card-bg: #ffffff;
+    --text-color: #333333;
+    
+    /* Typography */
+    --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-heading: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+    /* Sizing */
+    --border-radius: 8px;
+    --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    --transition-speed: 0.3s;
+  }
+  
+  /* CSS Reset and Base Styles */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  html {
+    font-size: 62.5%; /* 1rem = 10px */
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: var(--font-main);
+    font-size: 1.6rem;
+    line-height: 1.5;
+    color: var(--text-color);
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+  }
+  
+  h1 {
+    font-size: 3.2rem;
+    font-weight: 700;
+  }
+  
+  h2 {
+    font-size: 2.4rem;
+    font-weight: 600;
+  }
+  
+  h3 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+  }
+  
+  h4 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    margin-bottom: 1.5rem;
+  }
+  
+  a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: color var(--transition-speed) ease;
+  }
+  
+  a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+  }
+  
+  /* Layout */
+  .wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  header {
+    text-align: center;
+    padding: 2rem 0;
+  }
+  
+  .subtitle {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    opacity: 0.8;
+    margin-top: -1rem;
+  }
+  
+  main {
+    padding: 2rem 0;
+  }
+  
+  footer {
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 4rem;
+    font-size: 1.4rem;
+    color: var(--primary-color);
+  }
+  
+  /* Card Component */
+  .card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin: 0 auto;
+    max-width: 800px;
+    overflow: hidden;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 2rem;
+    position: relative;
+  }
+  
+  .card-header h2 {
+    color: white;
+    margin: 0;
+  }
+  
+  .card-body {
+    padding: 3rem;
+  }
+  
+  .card-footer {
+    background-color: var(--light-color);
+    padding: 2rem;
+    text-align: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Password Display */
+  .password-container {
+    position: relative;
+    margin-bottom: 2rem;
+  }
+  
+  #password {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    padding: 1.5rem;
+    font-family: 'Courier New', monospace;
+    font-size: 1.8rem;
+    line-height: 1.4;
+    color: var(--text-color);
+    background-color: var(--light-color);
+    border: 2px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    resize: none;
+    height: 8rem;
+    overflow: auto;
+    text-align: left;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+  }
+  
+  #password:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+  }
+  
+  .btn-copy {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color var(--transition-speed);
+  }
+  
+  .btn-copy:hover,
+  .btn-copy:focus {
+    background-color: var(--primary-color);
+    outline: none;
+  }
+  
+  .btn-copy.success {
+    background-color: var(--success-color);
+  }
+  
+  .btn-copy:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Strength Indicator */
+  .strength-indicator {
+    margin-bottom: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .strength-indicator label {
+    font-weight: 600;
+    min-width: 15rem;
+  }
+  
+  progress {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    max-width: 30rem;
+    height: 1rem;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  progress::-webkit-progress-bar {
+    background-color: #eee;
+    border-radius: 5px;
+  }
+  
+  progress::-webkit-progress-value {
+    background-color: var(--warning-color);
+    transition: background-color var(--transition-speed), width var(--transition-speed);
+  }
+  
+  progress.weak::-webkit-progress-value {
+    background-color: var(--accent-color);
+  }
+  
+  progress.medium::-webkit-progress-value {
+    background-color: var(--warning-color);
+  }
+  
+  progress.strong::-webkit-progress-value {
+    background-color: var(--success-color);
+  }
+  
+  progress.very-strong::-webkit-progress-value {
+    background-color: #27ae60;
+  }
+  
+  #strength-text {
+    font-weight: 600;
+    padding: 0.3rem 0.8rem;
+    border-radius: 3px;
+    color: white;
+    background-color: #95a5a6;
+  }
+  
+  #strength-text.weak {
+    background-color: var(--accent-color);
+  }
+  
+  #strength-text.medium {
+    background-color: var(--warning-color);
+  }
+  
+  #strength-text.strong {
+    background-color: var(--success-color);
+  }
+  
+  #strength-text.very-strong {
+    background-color: #27ae60;
+  }
+  
+  /* Error Message */
+  .error {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--accent-color);
+    border-left: 4px solid var(--accent-color);
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    font-weight: 500;
+    display: none;
+  }
+  
+  .error.show {
+    display: block;
+  }
+  
+  /* Options Container */
+  .options-container {
+    margin-top: 3rem;
+  }
+  
+  .length-option {
+    margin-bottom: 2.5rem;
+  }
+  
+  .length-option label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  .slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 0.8rem;
+    background: #ddd;
+    border-radius: 5px;
+    outline: none;
+    margin-bottom: 1rem;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    cursor: pointer;
+    transition: background-color var(--transition-speed);
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    cursor: pointer;
+    transition: background-color var(--transition-speed);
+  }
+  
+  .slider::-webkit-slider-thumb:hover,
+  .slider::-moz-range-thumb:hover {
+    background: var(--primary-color);
+  }
+  
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    color: #666;
+  }
+  
+  /* Character Options */
+  .character-options {
+    margin-bottom: 2.5rem;
+  }
+  
+  .checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .checkbox-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .checkbox-container input[type="checkbox"] {
+    margin-right: 1rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    cursor: pointer;
+  }
+  
+  .checkbox-container label {
+    cursor: pointer;
+  }
+  
+  /* Advanced Options */
+  .toggle-btn {
+    background-color: transparent;
+    color: var(--secondary-color);
+    border: none;
+    padding: 1rem 0;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: color var(--transition-speed);
+  }
+  
+  .toggle-btn:hover,
+  .toggle-btn:focus {
+    color: var(--primary-color);
+    text-decoration: underline;
+    outline: none;
+  }
+  
+  .advanced-options {
+    margin-top: 2rem;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    border: 1px solid #e9ecef;
+    display: none;
+  }
+  
+  .advanced-options.show {
+    display: block;
+  }
+  
+  .info-box {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: rgba(52, 152, 219, 0.1);
+    border-left: 4px solid var(--secondary-color);
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  }
+  
+  .info-box h4 {
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+  }
+  
+  .info-box ul {
+    margin-left: 2rem;
+  }
+  
+  .info-box li {
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Button Styles */
+  .btn {
+    display: inline-block;
+    background-color: var(--secondary-color);
+    color: white;
+    font-size: 1.6rem;
+    font-weight: 600;
+    padding: 1.2rem 2.4rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color var(--transition-speed), transform var(--transition-speed);
+  }
+  
+  .btn:hover,
+  .btn:focus {
+    background-color: var(--primary-color);
+    transform: translateY(-2px);
+    outline: none;
+  }
+  
+  .btn:active {
+    transform: translateY(0);
+  }
+  
+  .btn i {
+    margin-right: 0.8rem;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    html {
+      font-size: 55%;
+    }
+    
+    .card {
+      margin: 0 1rem;
+    }
+    
+    .card-body {
+      padding: 2rem;
+    }
+    
+    .checkbox-group {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    html {
+      font-size: 50%;
+    }
+    
+    h1 {
+      font-size: 2.8rem;
+    }
+    
+    .card-body {
+      padding: 1.5rem;
+    }
+    
+    .btn {
+      width: 100%;
+    }
+  }

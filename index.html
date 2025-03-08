@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta name="description" content="Secure password generator with advanced cryptographic features" />
+  <meta name="author" content="Freddrick Logan" />
+  <title>Secure Password Generator | Cybersecurity Tools</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+</head>
+
+<body>
+  <div class="wrapper">
+    <header>
+      <h1><i class="fas fa-shield-alt"></i> Secure Password Generator</h1>
+      <p class="subtitle">Enterprise-grade passwords with entropy measurement</p>
+    </header>
+    
+    <main>
+      <div class="card">
+        <div class="card-header">
+          <h2>Generate a Password</h2>
+        </div>
+        
+        <div class="card-body">
+          <div class="password-container">
+            <textarea readonly id="password" placeholder="Your Secure Password" aria-label="Generated Password"></textarea>
+            <button id="copy" class="btn-copy" aria-label="Copy password to clipboard">
+              <i class="fas fa-copy"></i>
+            </button>
+          </div>
+          
+          <div class="strength-indicator">
+            <label for="strength-meter">Password Strength:</label>
+            <progress id="strength-meter" value="0" max="100"></progress>
+            <span id="strength-text">Generate a password</span>
+          </div>
+          
+          <div id="error-message" class="error"></div>
+          
+          <div class="options-container">
+            <div class="length-option">
+              <label for="password-length">Password Length: <span id="length-value">16</span></label>
+              <input type="range" id="password-length" min="8" max="128" value="16" class="slider" />
+              <div class="range-labels">
+                <span>8</span>
+                <span>32</span>
+                <span>64</span>
+                <span>96</span>
+                <span>128</span>
+              </div>
+            </div>
+            
+            <div class="character-options">
+              <h3>Character Types</h3>
+              <div class="checkbox-group">
+                <div class="checkbox-container">
+                  <input type="checkbox" id="include-lowercase" checked />
+                  <label for="include-lowercase">Lowercase (a-z)</label>
+                </div>
+                
+                <div class="checkbox-container">
+                  <input type="checkbox" id="include-uppercase" checked />
+                  <label for="include-uppercase">Uppercase (A-Z)</label>
+                </div>
+                
+                <div class="checkbox-container">
+                  <input type="checkbox" id="include-numeric" checked />
+                  <label for="include-numeric">Numbers (0-9)</label>
+                </div>
+                
+                <div class="checkbox-container">
+                  <input type="checkbox" id="include-special" checked />
+                  <label for="include-special">Special (!@#$%^&*)</label>
+                </div>
+              </div>
+            </div>
+            
+            <button id="advanced-toggle" class="toggle-btn">Show Advanced Options</button>
+            
+            <div id="advanced-options" class="advanced-options">
+              <h3>Advanced Options</h3>
+              <div class="checkbox-group">
+                <div class="checkbox-container">
+                  <input type="checkbox" id="exclude-ambiguous" />
+                  <label for="exclude-ambiguous">Exclude Ambiguous Characters (1, l, I, 0, O)</label>
+                </div>
+                
+                <div class="checkbox-container">
+                  <input type="checkbox" id="exclude-similar" />
+                  <label for="exclude-similar">Exclude Similar Characters ({}, [], (), /, \, etc.)</label>
+                </div>
+                
+                <div class="checkbox-container">
+                  <input type="checkbox" id="require-all-types" checked />
+                  <label for="require-all-types">Require At Least One Character From Each Selected Type</label>
+                </div>
+              </div>
+              
+              <div class="info-box">
+                <h4><i class="fas fa-info-circle"></i> Security Information</h4>
+                <p>This application generates cryptographically secure random passwords using the Web Cryptography API. All processing happens in your browser - no passwords are sent to any server.</p>
+                <p>For maximum security:</p>
+                <ul>
+                  <li>Use passwords of at least 16 characters</li>
+                  <li>Include all character types</li>
+                  <li>Use a different password for each service</li>
+                  <li>Consider using a password manager</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card-footer">
+          <button id="generate" class="btn">
+            <i class="fas fa-sync-alt"></i> Generate Password
+          </button>
+        </div>
+      </div>
+    </main>
+    
+    <footer>
+      <p>Created by <a href="https://github.com/freddricklogan" target="_blank">Freddrick Logan</a> | <a href="https://github.com/freddricklogan/password-generator" target="_blank">View on GitHub</a></p>
+      <p><small>Implements NIST <a href="https://pages.nist.gov/800-63-3/sp800-63b.html" target="_blank">SP 800-63B</a> password guidelines</small></p>
+    </footer>
+  </div>
+  
+  <script src="script.js"></script>
+</body>
+</html>
