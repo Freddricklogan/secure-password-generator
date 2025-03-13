@@ -4,7 +4,7 @@
 
 A modern, enterprise-grade password generator with advanced cybersecurity features. This application creates cryptographically secure passwords with detailed strength analysis and entropy calculation.
 
-<img src="assets/images/portfolio.jpg" alt="Portfolio Overview" width="60%">
+<img src="assets/images/cybersecurity.jpg" alt="Portfolio Overview" width="60%">
 
 ## 🚀 Features
 
