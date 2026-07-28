@@ -1,54 +1,83 @@
-# Secure Password Generator
+<h1 align="center">Secure Password Generator</h1>
 
-## 🔐 Overview
+<p align="center">
+  <em>Cryptographically secure password generation with real entropy measurement — not Math.random().</em>
+</p>
 
-A modern, enterprise-grade password generator with advanced cybersecurity features. This application creates cryptographically secure passwords with detailed strength analysis and entropy calculation.
+<p align="center">
+  <a href="https://freddricklogan.github.io/secure-password-generator/"><img src="https://img.shields.io/badge/Live_Demo-Open_App-4361ee?style=for-the-badge&logo=github" alt="Live Demo"></a>
+</p>
 
-<img src="assets/images/cybersecurity.jpg" alt="Portfolio Overview" width="60%">
+<p align="center">
+  <img src="https://img.shields.io/badge/Entropy-CSPRNG-4361ee" alt="CSPRNG">
+  <img src="https://img.shields.io/badge/Crypto-Web_Crypto_API-3a0ca3" alt="Web Crypto">
+  <img src="https://img.shields.io/badge/JavaScript-Vanilla_ES6-f7df1e?logo=javascript&logoColor=black" alt="JavaScript">
+  <img src="https://img.shields.io/badge/License-MIT-lightgrey" alt="License">
+</p>
 
-## 🚀 Features
+---
 
-- **Cryptographic Security**: Uses Web Cryptography API for true randomness
-- **Entropy Calculation**: Provides mathematical measurement of password strength
-- **Customizable Options**: Configure length, character sets, and special requirements
-- **Visual Strength Meter**: Real-time feedback on password security
-- **Advanced Controls**: Exclude ambiguous characters, require specific character types
-- **Mobile Responsive**: Works seamlessly across all device sizes
-- **Accessibility**: Built with a11y best practices for universal usability
-- **Zero Server Dependency**: All computation happens client-side for maximum privacy
+## Overview
 
-## 🧰 Technologies Used
+**Secure Password Generator** creates strong, unpredictable passwords using a **cryptographically
+secure random number generator** (`crypto.getRandomValues`) rather than the biased, predictable
+`Math.random()` most generators quietly rely on. Every generated password comes with a real
+**entropy** estimate so you can reason about strength in bits, not vague “weak/strong” labels.
 
-- **JavaScript**: ES6+ features with strict security practices
-- **CSS3**: Modern design with CSS variables and flexbox/grid
-- **HTML5**: Semantic markup with accessibility features
-- **Web Cryptography API**: For cryptographically secure random number generation
-- **Font Awesome**: For intuitive iconography
-- **Responsive Design**: Mobile-first approach for all screen sizes
+The distinction matters: password security is fundamentally about randomness quality, and this project
+is built to get that detail right — the kind of thing that separates a security-aware engineer from a
+tutorial follower.
 
-## 🔍 Security Features
+> **▶ [Launch the live demo](https://freddricklogan.github.io/secure-password-generator/)**
 
-- Implements NIST [SP 800-63B](https://pages.nist.gov/800-63-3/sp800-63b.html) guidelines for password security
-- Uses cryptographically secure random number generation (CSPRNG)
-- Calculates and displays password entropy for objective strength measurement
-- Enforces minimum security requirements with real-time validation
-- Provides educational information about password best practices
+---
 
-## 📊 Password Strength Analysis
+## Why this project
 
-The application uses multiple factors to determine password strength:
+| Skill demonstrated | Where it shows up |
+|:--|:--|
+| **Security fundamentals** | CSPRNG via `crypto.getRandomValues` instead of `Math.random()` |
+| **Information theory** | Live entropy (bits) computed from character set and length |
+| **Threat awareness** | Strength framed against brute-force / guessing resistance |
+| **UX for security** | Clear, immediate feedback and sensible defaults |
+| **Front-end engineering** | Dependency-free, responsive interface |
 
-1. **Entropy Calculation**: Mathematical measurement of randomness
-2. **Character Diversity**: Analysis of character type distribution
-3. **Pattern Detection**: Identification of common sequences or repetitions
-4. **Length Assessment**: Evaluation based on password length
+---
 
-## 🚦 Getting Started
+## Features
 
-### Prerequisites
-- Modern web browser (Chrome, Firefox, Safari, Edge)
+- **CSPRNG-based** generation for genuine unpredictability
+- Configurable length and character sets (upper, lower, digits, symbols)
+- Live **entropy / strength** meter in bits
+- One-click copy
+- Fully client-side — passwords never leave the browser
 
-### Installation
-1. Clone the repository
+---
+
+## Tech stack
+
+- **Language:** Vanilla JavaScript (ES6+)
+- **Randomness:** Web Crypto API (`crypto.getRandomValues`)
+- **Runtime:** 100% client-side — no backend, no install
+
+---
+
+## Run locally
+
 ```bash
-git clone https://github.com/freddricklogan/secure-password-generator.git
+git clone https://github.com/Freddricklogan/secure-password-generator.git
+cd secure-password-generator
+python3 -m http.server 8000
+# then visit http://localhost:8000
+```
+
+---
+
+## Author
+
+**Freddrick Logan** — Educational Technologist & Technology Leader
+[GitHub](https://github.com/Freddricklogan) · [LinkedIn](https://www.linkedin.com/in/freddricklogan/)
+
+## License
+
+Released under the [MIT License](LICENSE).
