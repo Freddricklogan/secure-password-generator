@@ -5,14 +5,14 @@
 
 :root {
     /* Color scheme */
-    --primary-color: #33ff66;   /* phosphor green */
+    --primary-color: #2fbf5f;   /* phosphor green */
     --secondary-color: #2fbf5f; /* secondary green */
     --accent-color: #cf5c4e;    /* muted red (danger/weak) */
-    --success-color: #33ff66;   /* strong */
+    --success-color: #2fbf5f;   /* strong */
     --warning-color: #d9a441;   /* gold (medium) */
-    --light-color: #10160f;     /* dark panel surface */
-    --dark-color: #0a0e0a;
-    --card-bg: #10160f;
+    --light-color: #0b0f0b;     /* dark panel surface */
+    --dark-color: #0b0f0b;
+    --card-bg: #0b0f0b;
     --text-color: #cdefd6;      /* soft green-white */
     
     /* Typography */
@@ -21,7 +21,7 @@
     
     /* Sizing */
     --border-radius: 8px;
-    --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    --box-shadow: 0 4px 10px rgba(11, 15, 11, 0.15);
     --transition-speed: 0.3s;
   }
   
@@ -44,7 +44,7 @@
     font-size: 1.6rem;
     line-height: 1.5;
     color: var(--text-color);
-    background: linear-gradient(135deg, #0a0e0a 0%, #0d130c 100%);
+    background: linear-gradient(135deg, #0b0f0b 0%, #0b0f0b 100%);
     min-height: 100vh;
     margin: 0;
     padding: 0;
@@ -139,13 +139,13 @@
   
   .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 15px rgba(11, 15, 11, 0.2);
   }
   
   .card-header {
-    background-color: #0d130c;
+    background-color: #0b0f0b;
     color: var(--primary-color);
-    border-bottom: 1px solid rgba(51,255,102,.25);
+    border-bottom: 1px solid rgba(47, 191, 95,.25);
     padding: 2rem;
     position: relative;
   }
@@ -153,7 +153,7 @@
   .card-header h2 {
     color: var(--primary-color);
     margin: 0;
-    text-shadow: 0 0 12px rgba(51,255,102,.35);
+    text-shadow: 0 0 12px rgba(47, 191, 95,.35);
   }
   
   .card-body {
@@ -164,7 +164,7 @@
     background-color: var(--light-color);
     padding: 2rem;
     text-align: center;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(11, 15, 11, 0.1);
   }
   
   /* Password Display */
@@ -196,7 +196,7 @@
   #password:focus {
     outline: none;
     border-color: var(--secondary-color);
-    box-shadow: 0 0 0 3px rgba(51,255,102,0.18);
+    box-shadow: 0 0 0 3px rgba(47, 191, 95,0.18);
   }
   
   .btn-copy {
@@ -204,7 +204,7 @@
     top: 1rem;
     right: 1rem;
     background-color: var(--secondary-color);
-    color: #0a0e0a;
+    color: #0b0f0b;
     border: none;
     border-radius: 50%;
     width: 4rem;
@@ -227,7 +227,7 @@
   }
   
   .btn-copy:disabled {
-    background-color: #2a2f28;
+    background-color: #0b100b;
     cursor: not-allowed;
   }
   
@@ -256,7 +256,7 @@
   }
   
   progress::-webkit-progress-bar {
-    background-color: #0d130c;
+    background-color: #0b0f0b;
     border-radius: 5px;
   }
   
@@ -278,15 +278,15 @@
   }
   
   progress.very-strong::-webkit-progress-value {
-    background-color: #33ff66;
+    background-color: #2fbf5f;
   }
   
   #strength-text {
     font-weight: 600;
     padding: 0.3rem 0.8rem;
     border-radius: 3px;
-    color: #0a0e0a;
-    background-color: #4a5a4d;
+    color: #0b0f0b;
+    background-color: #7f9585;
   }
   
   #strength-text.weak {
@@ -302,7 +302,7 @@
   }
   
   #strength-text.very-strong {
-    background-color: #33ff66;
+    background-color: #2fbf5f;
   }
   
   /* Error Message */
@@ -341,7 +341,7 @@
     appearance: none;
     width: 100%;
     height: 0.8rem;
-    background: #0d130c;
+    background: #0b0f0b;
     border-radius: 5px;
     outline: none;
     margin-bottom: 1rem;
@@ -430,9 +430,9 @@
   .advanced-options {
     margin-top: 2rem;
     padding: 2rem;
-    background-color: #0d130c;
+    background-color: #0b0f0b;
     border-radius: var(--border-radius);
-    border: 1px solid #1a241a;
+    border: 1px solid #0b100b;
     display: none;
   }
   
@@ -443,7 +443,7 @@
   .info-box {
     margin-top: 2rem;
     padding: 1.5rem;
-    background-color: rgba(51,255,102,0.08);
+    background-color: rgba(47, 191, 95,0.08);
     border-left: 4px solid var(--secondary-color);
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
   }
@@ -465,7 +465,7 @@
   .btn {
     display: inline-block;
     background-color: var(--secondary-color);
-    color: #0a0e0a;
+    color: #0b0f0b;
     font-size: 1.6rem;
     font-weight: 600;
     padding: 1.2rem 2.4rem;
