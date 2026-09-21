@@ -1,83 +1,131 @@
-<h1 align="center">Secure Password Generator</h1>
+# Secure Password Generator: CSPRNG with rejection sampling, entropy in bits, and a strength scale that says what it is
 
-<p align="center">
-  <em>Cryptographically secure password generation with real entropy measurement — not Math.random().</em>
-</p>
+[![CI/CD](https://github.com/Freddricklogan/secure-password-generator/actions/workflows/deploy.yml/badge.svg)](https://github.com/Freddricklogan/secure-password-generator/actions/workflows/deploy.yml)
+[![Coverage](https://img.shields.io/badge/coverage-96.42%25-brightgreen)](#5-getting-started--verification)
+[![Security (CodeQL)](https://github.com/Freddricklogan/secure-password-generator/actions/workflows/codeql.yml/badge.svg)](https://github.com/Freddricklogan/secure-password-generator/actions/workflows/codeql.yml)
+[![License MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![Live Demo](https://img.shields.io/badge/live%20demo-online-brightgreen)](https://freddricklogan.github.io/secure-password-generator/)
 
-<p align="center">
-  <a href="https://freddricklogan.github.io/secure-password-generator/"><img src="https://img.shields.io/badge/Live_Demo-Open_App-4361ee?style=for-the-badge&logo=github" alt="Live Demo"></a>
-</p>
+## 1. Executive Summary & Business Impact
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Entropy-CSPRNG-4361ee" alt="CSPRNG">
-  <img src="https://img.shields.io/badge/Crypto-Web_Crypto_API-3a0ca3" alt="Web Crypto">
-  <img src="https://img.shields.io/badge/JavaScript-Vanilla_ES6-f7df1e?logo=javascript&logoColor=black" alt="JavaScript">
-  <img src="https://img.shields.io/badge/License-MIT-lightgrey" alt="License">
-</p>
+**Problem statement.** Password generators are judged on two things:
+whether every character is equally likely, and whether the "strength"
+they report means anything. The previous build got the first mostly
+right — `crypto.getRandomValues` with rejection sampling — but carried
+a signed-shift bug in the sampler, an unused `Math.random` helper, and
+a strength score out of 100 assembled from entropy and invented
+bonuses (`AUDIT.md`).
 
----
+**Solution & value delivered.** The same options, kept to scope, on a
+sampler that uses unsigned arithmetic and rejects biased bytes (with a
+chi-squared flatness test in the suite), a shuffle that never trims a
+guaranteed character, entropy stated in bits with the formula and the
+pool size that produced it, bands labelled as this tool's own
+thresholds, and expected guess times at three named rates with the
+assumption printed. No dependencies; nothing leaves the page.
 
-## Overview
+**[→ Read the full case study](docs/CASE_STUDY.md)**
 
-**Secure Password Generator** creates strong, unpredictable passwords using a **cryptographically
-secure random number generator** (`crypto.getRandomValues`) rather than the biased, predictable
-`Math.random()` most generators quietly rely on. Every generated password comes with a real
-**entropy** estimate so you can reason about strength in bits, not vague “weak/strong” labels.
+![Secure Password Generator](docs/screenshot.png)
 
-The distinction matters: password security is fundamentally about randomness quality, and this project
-is built to get that detail right — the kind of thing that separates a security-aware engineer from a
-tutorial follower.
+## 2. Demonstrated Competencies & Technical Skills
 
-> **▶ [Launch the live demo](https://freddricklogan.github.io/secure-password-generator/)**
+- **Cybersecurity** — CSPRNG use, modulo-bias avoidance by rejection
+  sampling, entropy arithmetic, guess-rate reasoning with stated
+  assumptions, strict CSP.
+- **Statistics** — chi-squared test of sampler flatness in the test
+  suite.
+- **Engineering Practice** — injected byte source for deterministic
+  tests, conformance checks across option combinations, no external
+  scripts.
 
----
+## 3. System Architecture & Data Flow
 
-## Why this project
+```mermaid
+flowchart LR
+  subgraph TB1["Trust Boundary: the browser (GitHub Pages, static, no external scripts)"]
+    CSPRNG["crypto.getRandomValues"]:::security
+    G["generator.js<br/>uniformInt · buildPools · generate · entropyBits · band · expectedSeconds (7 tests)"]:::service
+    MAIN["src/main.js<br/>options · password · strength · Executive Shell"]:::client
+  end
+  CSPRNG --> G --> MAIN
+  classDef client fill:#1f2a44,stroke:#58A6FF,color:#e6edf3
+  classDef service fill:#14213d,stroke:#3fb950,color:#e6edf3
+  classDef security fill:#3a1f1f,stroke:#f85149,color:#e6edf3
+```
 
-| Skill demonstrated | Where it shows up |
-|:--|:--|
-| **Security fundamentals** | CSPRNG via `crypto.getRandomValues` instead of `Math.random()` |
-| **Information theory** | Live entropy (bits) computed from character set and length |
-| **Threat awareness** | Strength framed against brute-force / guessing resistance |
-| **UX for security** | Clear, immediate feedback and sensible defaults |
-| **Front-end engineering** | Dependency-free, responsive interface |
+## 4. Technical Highlights & Engineering Decisions
 
----
+### ADR-1 — Rejection sampling over whole bytes, unsigned
 
-## Features
+**Context.** `x % n` over a byte is biased unless 256 is a multiple of
+`n`; the old sampler rejected correctly but accumulated with a signed
+shift.
 
-- **CSPRNG-based** generation for genuine unpredictability
-- Configurable length and character sets (upper, lower, digits, symbols)
-- Live **entropy / strength** meter in bits
-- One-click copy
-- Fully client-side — passwords never leave the browser
+**Decision.** `uniformInt(n)` draws ⌈log₂ n / 8⌉ bytes, accumulates
+with multiplication, rejects values at or above the largest multiple of
+`n`, and returns the remainder. Tests pin the rejection boundary for
+`n = 10` (bytes 250–255 rejected), the two-byte case, and `2³² − 1`
+from four `0xFF` bytes.
 
----
+**Consequence.** A chi-squared statistic over 26,000 draws into 26
+buckets stays under the 99.9th percentile in the suite.
 
-## Tech stack
+### ADR-2 — Entropy with its inputs shown
 
-- **Language:** Vanilla JavaScript (ES6+)
-- **Randomness:** Web Crypto API (`crypto.getRandomValues`)
-- **Runtime:** 100% client-side — no backend, no install
+**Context.** A score out of 100 with bonuses cannot be checked.
 
----
+**Decision.** Show `length × log₂(pool)` with the pool size; label the
+bands as this tool's thresholds; give expected guess time at three
+named rates assuming the attacker knows the pool and length.
 
-## Run locally
+**Consequence.** A reader can recompute every number on the page.
+
+### ADR-3 — Inject the byte source
+
+**Context.** A generator that only reads the platform CSPRNG cannot be
+tested for determinism.
+
+**Decision.** Every function takes a `bytes(n)` argument defaulting to
+`crypto.getRandomValues`; tests pass sequences and assert exact
+outputs.
+
+**Consequence.** Generation, shuffling and the guaranteed-character rule
+are tested exactly, not statistically.
+
+## 5. Getting Started & Verification
+
+**Prerequisites.** Node 22 LTS. No build step; the page is served from
+the repository root.
 
 ```bash
 git clone https://github.com/Freddricklogan/secure-password-generator.git
 cd secure-password-generator
-python3 -m http.server 8000
-# then visit http://localhost:8000
+npm ci
+npm run lint && npm run validate && npm run coverage
+npx serve .    # open http://localhost:3000
 ```
 
----
+**Verification — the numbers this repository actually produced:**
 
-## Author
+```bash
+npm run coverage   # 7 passed / 7; All files 96.42% stmts, 91.54% branches
+npm run lint       # 0 problems
+npm run validate   # html-validate index.html: clean
+```
 
-**Freddrick Logan** — Educational Technologist & Technology Leader
-[GitHub](https://github.com/Freddricklogan) · [LinkedIn](https://www.linkedin.com/in/freddricklogan/)
+| Check | Result |
+| --- | --- |
+| Unit tests (Vitest) | **7 passed / 7** |
+| Coverage (logic module) | **96.42%** statements, **91.54%** branches (two unreachable fall-through returns uncovered; `main.js`, `ui.js` covered by the browser smoke test) |
+| ESLint, html-validate | clean |
+| Sampler flatness | chi-squared over 26,000 draws into 26 buckets < 52 (25 d.f.) |
+| Headless Chrome smoke | **0 console errors**; defaults → 16 characters from a 91-character pool, 104.1 bits, "Strong", self-check passes; lowercase only → 26-character pool, 75.2 bits, "Reasonable", `^[a-z]{16}$`; no sets → error shown and Generate disabled; exclude ambiguous → 86-character pool and none of `Il1O0` present; length 64 → 411.3 bits, "Very strong"; three tour steps; no horizontal scroll at 1280 or 400 px |
 
-## License
+## 6. Live Demo & Production Showcase
 
-Released under the [MIT License](LICENSE).
+**<https://freddricklogan.github.io/secure-password-generator/>**
+
+**30-second guided walkthrough.** Press **Take the 30-second tour**: it
+explains the sampler, changes the length to show the entropy move, and
+points at the guess-time estimates.

@@ -1,149 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <meta name="description" content="Secure password generator with advanced cryptographic features" />
-  <meta name="author" content="Freddrick Logan" />
-  <title>Secure Password Generator | Cybersecurity Tools</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/png" href="favicon.png" />
-<link rel="canonical" href="https://freddricklogan.github.io/secure-password-generator/">
-<meta name="robots" content="index, follow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'">
+<title>Secure Password Generator — CSPRNG, stated entropy</title>
+<meta name="description" content="Password generator using the platform CSPRNG with rejection sampling, entropy in bits with the pool size shown, and guess-time estimates at stated rates. No dependencies; nothing leaves the page. By Freddrick Logan.">
 <meta name="author" content="Freddrick Logan">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Freddrick Logan">
-<meta property="og:title" content="Secure Password Generator | Cybersecurity Tools">
-<meta property="og:description" content="Secure password generator with advanced cryptographic features">
-<meta property="og:url" content="https://freddricklogan.github.io/secure-password-generator/">
-<meta property="og:image" content="https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&w=1200&h=630&q=80">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Secure Password Generator | Cybersecurity Tools">
-<meta name="twitter:description" content="Secure password generator with advanced cryptographic features">
-<meta name="twitter:image" content="https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&w=1200&h=630&q=80">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Secure Password Generator | Cybersecurity Tools","description":"Secure password generator with advanced cryptographic features","url":"https://freddricklogan.github.io/secure-password-generator/","image":"https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&w=1200&h=630&q=80","applicationCategory":"WebApplication","operatingSystem":"Any (Web)","author":{"@type":"Person","name":"Freddrick Logan","url":"https://fredlogan.phd"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<link rel="canonical" href="https://freddricklogan.github.io/secure-password-generator/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1220'/%3E%3Crect x='8' y='14' width='16' height='11' rx='2' fill='none' stroke='%2358a6ff' stroke-width='2'/%3E%3Cpath d='M11 14v-3a5 5 0 0 1 10 0v3' fill='none' stroke='%233fb950' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap">
+<link rel="stylesheet" href="src/exec-shell.css">
+<link rel="stylesheet" href="src/app.css">
 </head>
-
 <body>
-  <div class="wrapper">
-    <header>
-      <h1><i class="fas fa-shield-alt"></i> Secure Password Generator</h1>
-      <p class="subtitle">Enterprise-grade passwords with entropy measurement</p>
-    </header>
-    
-    <main>
-      <div class="card">
-        <div class="card-header">
-          <h2>Generate a Password</h2>
+<main id="demo-root" class="exec-main">
+  <div class="layout">
+    <aside class="stack">
+      <section class="panel" aria-labelledby="h-opts">
+        <h2 id="h-opts">Options</h2>
+        <div class="field"><label for="password-length">Length</label><output id="length-value" for="password-length">16</output><input type="range" id="password-length" min="8" max="128" value="16"></div>
+        <div class="opts">
+          <div class="check"><input type="checkbox" id="include-lowercase" checked><label for="include-lowercase">Lowercase (a–z)</label></div>
+          <div class="check"><input type="checkbox" id="include-uppercase" checked><label for="include-uppercase">Uppercase (A–Z)</label></div>
+          <div class="check"><input type="checkbox" id="include-numeric" checked><label for="include-numeric">Digits (0–9)</label></div>
+          <div class="check"><input type="checkbox" id="include-special" checked><label for="include-special">Symbols (29)</label></div>
+          <div class="check"><input type="checkbox" id="exclude-ambiguous"><label for="exclude-ambiguous">Exclude ambiguous (I l 1 O 0)</label></div>
+          <div class="check"><input type="checkbox" id="exclude-similar"><label for="exclude-similar">Exclude easily misread punctuation</label></div>
+          <div class="check"><input type="checkbox" id="require-all-types" checked><label for="require-all-types">Require at least one of each selected set</label></div>
         </div>
-        
-        <div class="card-body">
-          <div class="password-container">
-            <textarea readonly id="password" placeholder="Your Secure Password" aria-label="Generated Password"></textarea>
-            <button id="copy" class="btn-copy" aria-label="Copy password to clipboard">
-              <i class="fas fa-copy"></i>
-            </button>
-          </div>
-          
-          <div class="strength-indicator">
-            <label for="strength-meter">Password Strength:</label>
-            <progress id="strength-meter" value="0" max="100"></progress>
-            <span id="strength-text">Generate a password</span>
-          </div>
-          
-          <div id="error-message" class="error"></div>
-          
-          <div class="options-container">
-            <div class="length-option">
-              <label for="password-length">Password Length: <span id="length-value">16</span></label>
-              <input type="range" id="password-length" min="8" max="128" value="16" class="slider" />
-              <div class="range-labels">
-                <span>8</span>
-                <span>32</span>
-                <span>64</span>
-                <span>96</span>
-                <span>128</span>
-              </div>
-            </div>
-            
-            <div class="character-options">
-              <h3>Character Types</h3>
-              <div class="checkbox-group">
-                <div class="checkbox-container">
-                  <input type="checkbox" id="include-lowercase" checked />
-                  <label for="include-lowercase">Lowercase (a-z)</label>
-                </div>
-                
-                <div class="checkbox-container">
-                  <input type="checkbox" id="include-uppercase" checked />
-                  <label for="include-uppercase">Uppercase (A-Z)</label>
-                </div>
-                
-                <div class="checkbox-container">
-                  <input type="checkbox" id="include-numeric" checked />
-                  <label for="include-numeric">Numbers (0-9)</label>
-                </div>
-                
-                <div class="checkbox-container">
-                  <input type="checkbox" id="include-special" checked />
-                  <label for="include-special">Special (!@#$%^&*)</label>
-                </div>
-              </div>
-            </div>
-            
-            <button id="advanced-toggle" class="toggle-btn">Show Advanced Options</button>
-            
-            <div id="advanced-options" class="advanced-options">
-              <h3>Advanced Options</h3>
-              <div class="checkbox-group">
-                <div class="checkbox-container">
-                  <input type="checkbox" id="exclude-ambiguous" />
-                  <label for="exclude-ambiguous">Exclude Ambiguous Characters (1, l, I, 0, O)</label>
-                </div>
-                
-                <div class="checkbox-container">
-                  <input type="checkbox" id="exclude-similar" />
-                  <label for="exclude-similar">Exclude Similar Characters ({}, [], (), /, \, etc.)</label>
-                </div>
-                
-                <div class="checkbox-container">
-                  <input type="checkbox" id="require-all-types" checked />
-                  <label for="require-all-types">Require At Least One Character From Each Selected Type</label>
-                </div>
-              </div>
-              
-              <div class="info-box">
-                <h4><i class="fas fa-info-circle"></i> Security Information</h4>
-                <p>This application generates cryptographically secure random passwords using the Web Cryptography API. All processing happens in your browser - no passwords are sent to any server.</p>
-                <p>For maximum security:</p>
-                <ul>
-                  <li>Use passwords of at least 16 characters</li>
-                  <li>Include all character types</li>
-                  <li>Use a different password for each service</li>
-                  <li>Consider using a password manager</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="card-footer">
-          <button id="generate" class="btn">
-            <i class="fas fa-sync-alt"></i> Generate Password
-          </button>
-        </div>
-      </div>
-    </main>
-    
-    <footer>
-      <p>Created by <a href="https://github.com/freddricklogan" target="_blank">Freddrick Logan</a> | <a href="https://github.com/freddricklogan/password-generator" target="_blank">View on GitHub</a></p>
-      <p><small>Implements NIST <a href="https://pages.nist.gov/800-63-3/sp800-63b.html" target="_blank">SP 800-63B</a> password guidelines</small></p>
-    </footer>
+        <p class="problems" id="error-message" aria-live="polite" hidden></p>
+        <div class="button-row"><button type="button" class="btn btn--primary" id="generate">Generate</button><button type="button" class="btn" id="copy">Copy</button></div>
+        <p class="meta" id="copy-status" aria-live="polite"></p>
+      </section>
+    </aside>
+    <div class="stack">
+      <section class="panel" aria-labelledby="h-pw">
+        <h2 id="h-pw">Password</h2>
+        <div class="password" id="password" aria-live="polite">—</div>
+        <p class="meta" id="self-check">—</p>
+      </section>
+      <section class="panel" id="strength" aria-labelledby="h-strength">
+        <h2 id="h-strength">Strength</h2>
+        <p class="meta">Pool: <span id="pool">—</span> · Entropy: <strong id="bits">—</strong> (length × log₂ pool)</p>
+        <label for="strength-meter" class="meta">Band: <strong id="strength-text">—</strong></label>
+        <meter id="strength-meter" class="meter" min="0" max="128" value="0"></meter>
+        <p class="meta">Bands (this tool's thresholds, in bits): <span id="bands"></span></p>
+        <h3>Expected time to guess</h3>
+        <ul class="times" id="times"></ul>
+        <p class="method">Assumes the attacker knows the pool and the length, guesses at the stated rate, and succeeds halfway through the space on average. Rates are illustrative; real rates depend on the hash the target uses.</p>
+      </section>
+    </div>
   </div>
-  
-  <script src="script.js"></script>
-<footer id="app-copyright" style="text-align:center;padding:30px 20px;margin-top:48px;border-top:1px solid rgba(31,78,140,.18);background:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;color:#5a6b86;font-size:.86rem"><div style="font-weight:700;font-size:1rem"><a href="https://github.com/Freddricklogan" style="color:#14263f;text-decoration:none">Freddrick Logan</a> <span style="color:#5a6b86;font-weight:400">&mdash; Technologist &amp; Education</span></div><div style="margin-top:8px">&copy; 2026 Freddrick Logan. All rights reserved.</div></footer>
+</main>
+<script type="module" src="src/main.js"></script>
 </body>
 </html>
