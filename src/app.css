@@ -132,7 +132,7 @@ tr.is-alert td { color: var(--danger); }
 h3 { margin: 18px 0 8px; font-size: .78rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
 td:last-child, th:last-child { text-align: center; font-family: inherit; }
 /* government-service-portal additions */
-.proto-banner { background: color-mix(in srgb, var(--warn) 18%, var(--panel)); color: var(--warn); border: 1px solid color-mix(in srgb, var(--warn) 50%, transparent); border-radius: var(--radius-sm); padding: 8px 12px; font-size: .84rem; margin-bottom: 12px; }
+.proto-banner { background: color-mix(in srgb, var(--warn) 12%, var(--panel)); color: var(--warn); border: 1px solid color-mix(in srgb, var(--warn) 50%, transparent); border-radius: var(--radius-sm); padding: 8px 12px; font-size: .84rem; margin-bottom: 12px; }
 .page-title { font-size: 1.5rem; margin: 6px 0 12px; text-transform: none; letter-spacing: 0; color: var(--text); }
 #view { outline: none; }
 #view h2 { font-size: 1.05rem; text-transform: none; letter-spacing: 0; color: var(--text); margin: 20px 0 8px; }
