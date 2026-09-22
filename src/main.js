@@ -51,6 +51,7 @@ function boot() {
   setText('bands', BANDS.slice().reverse().map(([min, label]) => `${label} ≥ ${min}`).join(' · '));
   run();
   const shell = mountExecShell({
+  theme: 'graphite',
     title: 'Secure Password Generator',
     tagline: 'Passwords from the platform CSPRNG with rejection sampling so no character is favoured, entropy stated in bits with the pool that produced it, and guess-time estimates at three stated rates. Nothing leaves the page.',
     repo: 'https://github.com/Freddricklogan/secure-password-generator',
