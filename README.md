@@ -45,7 +45,7 @@ assumption printed. No dependencies; nothing leaves the page.
 flowchart LR
   subgraph TB1["Trust Boundary: the browser (GitHub Pages, static, no external scripts)"]
     CSPRNG["crypto.getRandomValues"]:::security
-    G["generator.js<br/>uniformInt · buildPools · generate · entropyBits · band · expectedSeconds (7 tests)"]:::service
+    G["generator.js<br/>uniformInt · buildPools · generate · entropyBits · band · expectedSeconds (15 tests)"]:::service
     MAIN["src/main.js<br/>options · password · strength · Executive Shell"]:::client
   end
   CSPRNG --> G --> MAIN
